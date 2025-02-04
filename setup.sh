@@ -99,6 +99,9 @@ fi
 # Copy configuration files from "Migrate" while ignoring ".git"
 if [ -d "$MIGRATE_DIR" ]; then
   echo -e "${YELLOW}Copying configuration files from Migrate/...${RESET}"
+    
+  # Enable dotfiles handling
+  shopt -s dotglob
   
   for dir in "$MIGRATE_DIR"/*; do
     if [[ -d "$dir" && "$(basename "$dir")" != ".git" ]]; then
@@ -117,6 +120,10 @@ if [ -d "$MIGRATE_DIR" ]; then
       echo -e "${GREEN}Files copied to $target_dir successfully!${RESET}"
     fi
   done
+  
+  # Disable dotglob after the operation
+  shopt -u dotglob
+  
 else
   echo -e "${RED}No 'Migrate' directory found in the repository.${RESET}"
 fi
