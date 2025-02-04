@@ -4,10 +4,12 @@
 bash <(curl -s https://raw.githubusercontent.com/Hilel-B/new-deb/main/setup.sh)
 
 setup.sh will:
+
 install git
 fetch this repo
 install all softwares listed in "softs"
 move everything in "Migrate" to corresponding directories in target system, the name of the directory correspond to where everything inside will be put, like in following example:
+
 
 new-deb/
 │── softs                # List of software to install
