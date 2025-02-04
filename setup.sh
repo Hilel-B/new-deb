@@ -1,22 +1,10 @@
 #!/bin/bash
 
-# Define color variables
-RED="\e[31m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-BLUE="\e[34m"
-CYAN="\e[36m"
-RESET="\e[0m"
+# Load the configuration file
+source ./setup-config.sh
+
 
 echo -e "${CYAN}Starting setup...${RESET}"
-
-REPO="new-deb"
-GITHUB_URL="https://github.com/Hilel-B/$REPO.git"
-LOCAL_REPO="$HOME/$REPO"
-MIGRATE_DIR="$LOCAL_REPO/Migrate"
-SCRIPTS_DIR="$LOCAL_REPO/Scripts"
-BEFORE_SCRIPTS="$SCRIPTS_DIR/Before"
-AFTER_SCRIPTS="$SCRIPTS_DIR/After"
 
 # Function to execute scripts in a directory (sorted by filename)
 execute_scripts() {
@@ -39,11 +27,11 @@ execute_scripts "$BEFORE_SCRIPTS" "Before"
 
 # Update and upgrade system
 echo -e "${YELLOW}Updating and upgrading system...${RESET}"
-sudo apt update && sudo apt upgrade -y
+eval "$UPDATE_CMD"
 
 # Install Git to first fetch the repo
 echo -e "${YELLOW}Installing Git...${RESET}"
-sudo apt install git -y
+eval "$INSTALL_CMD git"
 
 # Clone the repository
 if [ -d "$LOCAL_REPO" ]; then
@@ -64,7 +52,7 @@ if [ -f "$SOFTS_FILE" ]; then
       continue
     fi
     echo -e "${BLUE}Installing $software...${RESET}"
-    if sudo apt install -y "$software"; then
+    if eval "$INSTALL_CMD $software"; then
       echo -e "${GREEN}$software installed successfully!${RESET}"
     else
       echo -e "${RED}Failed to install $software!${RESET}"
