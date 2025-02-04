@@ -3,8 +3,8 @@ echo "Starting setup..."
 # Update and upgrade system
 sudo apt update && sudo apt upgrade -y
 
-# Install tmux
-sudo apt install -y tmux
+# Install Git to first fetch the repo
+sudo apt install git
 
 # Install software from the "softs" file
 echo "Installing software..."
