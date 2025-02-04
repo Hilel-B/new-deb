@@ -67,7 +67,7 @@ execute_scripts() {
     for script in "$script_dir"/*.sh; do
       if [[ -f "$script" && -x "$script" ]]; then
         echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
-        bash "$script"
+        sudo bash "$script"
       fi
     done
   fi
