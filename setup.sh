@@ -56,6 +56,7 @@ MIGRATE_DIR="$LOCAL_REPO/Migrate"
 SCRIPTS_DIR="$LOCAL_REPO/Scripts"
 BEFORE_SCRIPTS="$SCRIPTS_DIR/Before"
 AFTER_SCRIPTS="$SCRIPTS_DIR/After"
+COMPLETE_SCRIPTS="$SCRIPTS_DIR/Complete"
 
 # Function to execute scripts in a directory (sorted by filename)
 execute_scripts() {
@@ -96,6 +97,9 @@ else
   echo -e "${RED}No 'softs' file found in the repository.${RESET}"
 fi
 
+# Run scripts after Installation
+execute_scripts "$AFTER_SCRIPTS" "After"
+
 # Copy configuration files from "Migrate" while ignoring ".git"
 if [ -d "$MIGRATE_DIR" ]; then
   echo -e "${YELLOW}Copying configuration files from Migrate/...${RESET}"
@@ -128,7 +132,7 @@ else
   echo -e "${RED}No 'Migrate' directory found in the repository.${RESET}"
 fi
 
-# Run scripts after migration
-execute_scripts "$AFTER_SCRIPTS" "After"
+# Run scripts after installation and migration
+execute_scripts "$COMPLETE_SCRIPTS" "Complete"
 
 echo -e "${GREEN}Setup complete! Restart your terminal for changes to take effect.${RESET}"
