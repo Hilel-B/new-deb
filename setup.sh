@@ -56,6 +56,7 @@ MIGRATE_DIR="$LOCAL_REPO/Migrate"
 SCRIPTS_DIR="$LOCAL_REPO/Scripts"
 BEFORE_SCRIPTS="$SCRIPTS_DIR/Before"
 AFTER_SCRIPTS="$SCRIPTS_DIR/After"
+COMPLETE_SCRIPTS="$SCRIPTS_DIR/Complete"
 
 # Function to execute scripts in a directory (sorted by filename)
 execute_scripts() {
@@ -64,12 +65,16 @@ execute_scripts() {
 
   if [ -d "$script_dir" ]; then
     echo -e "${YELLOW}Running $phase scripts...${RESET}"
+    
+    shopt -s nullglob  # Prevent errors if no scripts exist
     for script in "$script_dir"/*.sh; do
-      if [[ -f "$script" && -x "$script" ]]; then
+      # if [[ -f "$script" && -x "$script" ]]; then
+      if [[ -f "$script" ]]; then
         echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
         sudo bash "$script"
       fi
     done
+    shopt -u nullglob  # Restore default behavior
   fi
 }
 
@@ -95,6 +100,9 @@ if [ -f "$SOFTS_FILE" ]; then
 else
   echo -e "${RED}No 'softs' file found in the repository.${RESET}"
 fi
+
+# Run scripts after Installation
+execute_scripts "$AFTER_SCRIPTS" "After"
 
 # Copy configuration files from "Migrate" while ignoring ".git"
 if [ -d "$MIGRATE_DIR" ]; then
@@ -128,7 +136,7 @@ else
   echo -e "${RED}No 'Migrate' directory found in the repository.${RESET}"
 fi
 
-# Run scripts after migration
-execute_scripts "$AFTER_SCRIPTS" "After"
+# Run scripts after installation and migration
+execute_scripts "$COMPLETE_SCRIPTS" "Complete"
 
 echo -e "${GREEN}Setup complete! Restart your terminal for changes to take effect.${RESET}"
