@@ -66,7 +66,8 @@ execute_scripts() {
   if [ -d "$script_dir" ]; then
     echo -e "${YELLOW}Running $phase scripts...${RESET}"
     for script in "$script_dir"/*.sh; do
-      if [[ -f "$script" && -x "$script" ]]; then
+      # if [[ -f "$script" && -x "$script" ]]; then
+      if [[ -f "$script"]]; then
         echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
         sudo bash "$script"
       fi
