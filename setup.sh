@@ -13,6 +13,7 @@ echo -e "${CYAN}Starting setup...${RESET}"
 REPO="new-deb"
 GITHUB_URL="https://github.com/Hilel-B/$REPO.git"
 LOCAL_REPO="$HOME/$REPO"
+MIGRATE_DIR="$LOCAL_REPO/Migrate"
 
 # Update and upgrade system
 echo -e "${YELLOW}Updating and upgrading system...${RESET}"
@@ -51,19 +52,25 @@ else
   echo -e "${RED}No 'softs' file found in the repository.${RESET}"
 fi
 
-# Copy configuration files with backup
-echo -e "${YELLOW}Copying configuration files with backup...${RESET}"
-
-for dir in $(find "$LOCAL_REPO" -mindepth 1 -type d); do
-  target_dir="/$(basename "$dir")"  # Get the name of the folder and prepend "/"
+# Copy configuration files from "Migrate" while ignoring ".git"
+if [ -d "$MIGRATE_DIR" ]; then
+  echo -e "${YELLOW}Copying configuration files from Migrate/...${RESET}"
   
-  # Ensure the directory exists
-  sudo mkdir -p "$target_dir"
+  for dir in "$MIGRATE_DIR"/*; do
+    if [[ -d "$dir" && "$(basename "$dir")" != ".git" ]]; then
+      target_dir="/$(basename "$dir")"  # Use directory name as target path
+      
+      # Ensure the directory exists
+      sudo mkdir -p "$target_dir"
 
-  echo -e "${BLUE}Copying files to $target_dir (with backup if exists)...${RESET}"
-  sudo cp -r --backup=numbered "$dir/"* "$target_dir/"
+      echo -e "${BLUE}Copying files to $target_dir (with backup if exists)...${RESET}"
+      sudo cp -r --backup=numbered "$dir/"* "$target_dir/"
 
-  echo -e "${GREEN}Files copied to $target_dir successfully!${RESET}"
-done
+      echo -e "${GREEN}Files copied to $target_dir successfully!${RESET}"
+    fi
+  done
+else
+  echo -e "${RED}No 'Migrate' directory found in the repository.${RESET}"
+fi
 
 echo -e "${GREEN}Setup complete! Restart your terminal for changes to take effect.${RESET}"
