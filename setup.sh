@@ -14,6 +14,28 @@ REPO="new-deb"
 GITHUB_URL="https://github.com/Hilel-B/$REPO.git"
 LOCAL_REPO="$HOME/$REPO"
 MIGRATE_DIR="$LOCAL_REPO/Migrate"
+SCRIPTS_DIR="$LOCAL_REPO/Scripts"
+BEFORE_SCRIPTS="$SCRIPTS_DIR/Before"
+AFTER_SCRIPTS="$SCRIPTS_DIR/After"
+
+# Function to execute scripts in a directory (sorted by filename)
+execute_scripts() {
+  local script_dir="$1"
+  local phase="$2"
+
+  if [ -d "$script_dir" ]; then
+    echo -e "${YELLOW}Running $phase scripts...${RESET}"
+    for script in "$script_dir"/*.sh; do
+      if [[ -f "$script" && -x "$script" ]]; then
+        echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
+        bash "$script"
+      fi
+    done
+  fi
+}
+
+# Run scripts before installation
+execute_scripts "$BEFORE_SCRIPTS" "Before"
 
 # Update and upgrade system
 echo -e "${YELLOW}Updating and upgrading system...${RESET}"
@@ -76,5 +98,8 @@ if [ -d "$MIGRATE_DIR" ]; then
 else
   echo -e "${RED}No 'Migrate' directory found in the repository.${RESET}"
 fi
+
+# Run scripts after migration
+execute_scripts "$AFTER_SCRIPTS" "After"
 
 echo -e "${GREEN}Setup complete! Restart your terminal for changes to take effect.${RESET}"
