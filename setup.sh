@@ -6,6 +6,8 @@ sudo apt update && sudo apt upgrade -y
 # Install Git to first fetch the repo
 sudo apt install git
 
+git clone https://github.com/Hilel-B/new-deb.git
+
 # Install software from the "softs" file
 echo "Installing software..."
 while IFS= read -r software; do
