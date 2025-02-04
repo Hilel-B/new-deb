@@ -65,13 +65,16 @@ execute_scripts() {
 
   if [ -d "$script_dir" ]; then
     echo -e "${YELLOW}Running $phase scripts...${RESET}"
+    
+    shopt -s nullglob  # Prevent errors if no scripts exist
     for script in "$script_dir"/*.sh; do
       # if [[ -f "$script" && -x "$script" ]]; then
-      if [[ -f "$script"]]; then
+      if [[ -f "$script" ]]; then
         echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
         sudo bash "$script"
       fi
     done
+    shopt -u nullglob  # Restore default behavior
   fi
 }
 
