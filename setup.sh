@@ -1,10 +1,61 @@
 #!/bin/bash
 
-# Load the configuration file
-source ./setup-config.sh
-
+# Define color variables
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+CYAN="\e[36m"
+RESET="\e[0m"
 
 echo -e "${CYAN}Starting setup...${RESET}"
+
+REPO="new-deb"
+GITHUB_URL="https://github.com/Hilel-B/$REPO.git"
+LOCAL_REPO="$HOME/$REPO"
+
+# Detect package manager
+if command -v apt &>/dev/null; then
+  INSTALL_CMD="sudo apt install -y"
+  UPDATE_CMD="sudo apt update && sudo apt upgrade -y"
+elif command -v dnf &>/dev/null; then
+  INSTALL_CMD="sudo dnf install -y"
+  UPDATE_CMD="sudo dnf update -y"
+elif command -v pacman &>/dev/null; then
+  INSTALL_CMD="sudo pacman -S --noconfirm"
+  UPDATE_CMD="sudo pacman -Syu --noconfirm"
+elif command -v zypper &>/dev/null; then
+  INSTALL_CMD="sudo zypper install -y"
+  UPDATE_CMD="sudo zypper update -y"
+else
+  echo -e "${RED}Unsupported package manager. Exiting.${RESET}"
+  exit 1
+fi
+
+echo -e "${YELLOW}Using package manager: ${BLUE}$INSTALL_CMD${RESET}"
+
+# Update and upgrade system
+echo -e "${YELLOW}Updating and upgrading system...${RESET}"
+eval "$UPDATE_CMD"
+
+# Install Git to first fetch the repo
+echo -e "${YELLOW}Installing Git...${RESET}"
+eval "$INSTALL_CMD git"
+
+# Clone the repository
+if [ -d "$LOCAL_REPO" ]; then
+  echo -e "${BLUE}Repository already exists. Pulling latest changes...${RESET}"
+  git -C "$LOCAL_REPO" pull
+else
+  echo -e "${BLUE}Cloning repository...${RESET}"
+  git clone "$GITHUB_URL" "$LOCAL_REPO"
+fi
+
+# After cloning, define directories
+MIGRATE_DIR="$LOCAL_REPO/Migrate"
+SCRIPTS_DIR="$LOCAL_REPO/Scripts"
+BEFORE_SCRIPTS="$SCRIPTS_DIR/Before"
+AFTER_SCRIPTS="$SCRIPTS_DIR/After"
 
 # Function to execute scripts in a directory (sorted by filename)
 execute_scripts() {
@@ -24,23 +75,6 @@ execute_scripts() {
 
 # Run scripts before installation
 execute_scripts "$BEFORE_SCRIPTS" "Before"
-
-# Update and upgrade system
-echo -e "${YELLOW}Updating and upgrading system...${RESET}"
-eval "$UPDATE_CMD"
-
-# Install Git to first fetch the repo
-echo -e "${YELLOW}Installing Git...${RESET}"
-eval "$INSTALL_CMD git"
-
-# Clone the repository
-if [ -d "$LOCAL_REPO" ]; then
-  echo -e "${BLUE}Repository already exists. Pulling latest changes...${RESET}"
-  git -C "$LOCAL_REPO" pull
-else
-  echo -e "${BLUE}Cloning repository...${RESET}"
-  git clone "$GITHUB_URL" "$LOCAL_REPO"
-fi
 
 # Install software from the "softs" file
 SOFTS_FILE="$LOCAL_REPO/softs"
