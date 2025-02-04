@@ -58,7 +58,11 @@ if [ -d "$MIGRATE_DIR" ]; then
   
   for dir in "$MIGRATE_DIR"/*; do
     if [[ -d "$dir" && "$(basename "$dir")" != ".git" ]]; then
-      target_dir="/$(basename "$dir")"  # Use directory name as target path
+      if [[ "$(basename "$dir")" == "home" ]]; then
+        target_dir="$HOME"  # Map "Migrate/home" to ~ (home directory)
+      else
+        target_dir="/$(basename "$dir")"  # Other directories go to /
+      fi
       
       # Ensure the directory exists
       sudo mkdir -p "$target_dir"
