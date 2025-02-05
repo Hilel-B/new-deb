@@ -2,7 +2,7 @@ tmux
 gh
 build-essential
 gcc
-# neovim
+neovim
 make
 ripgrep
 
