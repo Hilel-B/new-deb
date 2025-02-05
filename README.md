@@ -3,12 +3,13 @@
 ### apt install curl then run this script to automatize everything
 bash <(curl -s https://raw.githubusercontent.com/Hilel-B/new-deb/main/setup.sh)
 
-setup.sh will:
-install git \
-fetch this repo \
-install all softwares listed in "softs" \
-move everything in "Migrate" to corresponding directories in target system, the name of the directory correspond to where everything inside will be put, like in following example: \
-
+### setup.sh will:
+#### install git \
+#### run scripts located at Scripts/Before \
+#### fetch this repo \
+#### install all softwares listed in "softs" \
+#### run scripts located at Scripts/After \
+#### move everything in "Migrate" to corresponding directories in target system, the name of the directory correspond to where everything inside will be put, like in following example: \
 
 new-deb/ \
 │── softs                # List of software to install \
@@ -21,3 +22,5 @@ new-deb/ \
 │   │   ├── custom-script → /usr/local/bin/custom-script \
 │── some-other-folder/   # Ignored \
 │── .git/                # Ignored \
+
+#### run scripts located at Scripts/Complete \
