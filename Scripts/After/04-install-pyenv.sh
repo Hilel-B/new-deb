@@ -6,7 +6,7 @@ echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
 echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 source ~/.bashrc
 
-PyVersion = "3.11.6"
+py_version="3.11.6"
 
-pyenv install "${PyVersion}"   # Change version as needed
-pyenv global "${PyVersion}"
+pyenv install "${py_version}"   # Change version as needed
+pyenv global "${py_version}"
