@@ -1,5 +1,6 @@
 # install dependencies
-sudo apt install -y curl git-core zlib1g-dev libssl-dev libreadline-dev libbz2-dev libsqlite3-dev
+sudo apt install -y curl git-core zlib1g-dev libssl-dev libreadline-dev libbz2-dev libsqlite3-dev libffi-dev liblzma-dev 
+
 curl https://pyenv.run | bash
 echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
