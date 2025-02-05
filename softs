@@ -1,3 +1,8 @@
 tmux
 gh
+gcc
 # neovim
+# make
+
+# dependencies for pyenv
+#git-core zlib1g-dev libssl-dev libreadline-dev libbz2-dev libsqlite3-dev
