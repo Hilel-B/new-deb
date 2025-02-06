@@ -4,7 +4,7 @@ build-essential
 gcc
 make
 ripgrep
-neovim
+# neovim
 
 # dependencies for pyenv
 git-core
