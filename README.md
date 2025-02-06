@@ -25,3 +25,5 @@ new-deb/ \
 │── .git/                # Ignored \
 
 #### run scripts located at Scripts/Complete \
+
+scripts starting with "IGNORE-" will be skipped
