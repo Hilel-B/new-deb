@@ -72,10 +72,13 @@ execute_scripts() {
       if [[ -f "$script" ]]; then
         echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
         sudo bash "$script"
+        source ~/.bashrc
       fi
     done
     shopt -u nullglob  # Restore default behavior
   fi
+
+  source ~/.bashrc
 }
 
 # Run scripts before installation
