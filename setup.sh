@@ -139,4 +139,6 @@ fi
 # Run scripts after installation and migration
 execute_scripts "$COMPLETE_SCRIPTS" "Complete"
 
+source ~/.bashrc
+
 echo -e "${GREEN}Setup complete! Restart your terminal for changes to take effect.${RESET}"
