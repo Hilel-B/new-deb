@@ -59,6 +59,27 @@ AFTER_SCRIPTS="$SCRIPTS_DIR/After"
 COMPLETE_SCRIPTS="$SCRIPTS_DIR/Complete"
 
 # Function to execute scripts in a directory (sorted by filename)
+# execute_scripts() {
+#   local script_dir="$1"
+#   local phase="$2"
+
+#   if [ -d "$script_dir" ]; then
+#     echo -e "${YELLOW}Running $phase scripts...${RESET}"
+    
+#     shopt -s nullglob  # Prevent errors if no scripts exist
+#     for script in "$script_dir"/*.sh; do
+#       # if [[ -f "$script" && -x "$script" ]]; then
+#       if [[ -f "$script" ]]; then
+#         echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
+#         sudo bash "$script"
+#         source ~/.bashrc
+#       fi
+#     done
+#     shopt -u nullglob  # Restore default behavior
+#   fi
+
+#   source ~/.bashrc
+# }
 execute_scripts() {
   local script_dir="$1"
   local phase="$2"
@@ -68,7 +89,12 @@ execute_scripts() {
     
     shopt -s nullglob  # Prevent errors if no scripts exist
     for script in "$script_dir"/*.sh; do
-      # if [[ -f "$script" && -x "$script" ]]; then
+      # Skip files starting with "IGNORE-"
+      if [[ "$(basename "$script")" == IGNORE-* ]]; then
+        echo -e "${CYAN}Skipping $(basename "$script")...${RESET}"
+        continue
+      fi
+
       if [[ -f "$script" ]]; then
         echo -e "${BLUE}Executing $(basename "$script")...${RESET}"
         sudo bash "$script"
@@ -80,6 +106,7 @@ execute_scripts() {
 
   source ~/.bashrc
 }
+
 
 # Run scripts before installation
 execute_scripts "$BEFORE_SCRIPTS" "Before"
