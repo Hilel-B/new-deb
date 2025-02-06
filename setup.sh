@@ -10,7 +10,7 @@ RESET="\e[0m"
 
 echo -e "${CYAN}Starting setup...${RESET}"
 
-REPO="new-deb"
+REPO="setup-debian"
 GITHUB_URL="https://github.com/Hilel-B/$REPO.git"
 LOCAL_REPO="$HOME/$REPO"
 
