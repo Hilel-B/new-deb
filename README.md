@@ -1,8 +1,9 @@
 # Script to setup the environment on new Debian install
 
 ### apt install curl then run this script to automatize everything
+```
 bash <(curl -s https://raw.githubusercontent.com/Hilel-B/new-deb/main/setup.sh)
-
+```
 ### setup.sh will:
 #### install git \
 #### run scripts located at Scripts/Before \
