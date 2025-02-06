@@ -4,6 +4,7 @@ build-essential
 gcc
 make
 ripgrep
+fzf
 # neovim
 
 # dependencies for pyenv
